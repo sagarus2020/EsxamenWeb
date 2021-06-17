@@ -1,6 +1,8 @@
 package co.ufps.controller;
 
 import java.io.IOException;
+
+import co.ufps.dao.rolDao;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,7 +16,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/")
 public class IndexServices extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+ 
+	rolDao roldao;
+	usuarioDao usuariodao;
+	seguimientoDao seguimientodao;
+	reporteDao reportedao;
+	typeDao typedbdao;
+	connectiontokenDao connectiontokendao;
     /**
      * Default constructor. 
      */
@@ -27,6 +35,7 @@ public class IndexServices extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
+		
 	}
 
 	/**
