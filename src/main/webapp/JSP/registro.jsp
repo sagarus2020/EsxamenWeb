@@ -55,16 +55,17 @@
 						name="email" required="required" maxlength="50">
 				</fieldset>
 <br>
-				<select class="form-select" aria-label="Default select example"
+			<!-- <select class="form-select" aria-label="Default select example"
 					name="estamentoId">
 					<option selected>Seleccione el estamento</option>
 					<c:forEach var="i" items="${roles}">
-						<option value="${i.id}">"${i.descripcion}"</option>
+						<option value="${i.id}">"${i.description}"</option>
+						<option value="1">"admin test"</option>
 					</c:forEach>
-
-
+</select> -->	
+<br>
 				<button type="submit" class="btn btn-danger">Registrar
-					Votante</button>
+					Usuario</button>
 			</form>
 
 			<c:if test="${registrado == true }">

@@ -14,6 +14,7 @@ import co.ufps.dao.typeDao;
 
 import co.ufps.entity.Rol;
 import co.ufps.entity.Usuario;
+import co.ufps.util.ServicioEmail;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -28,6 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet("/")
 public class IndexServices extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	String host = "http://localhost:8080/";
  
 	rolDao roldao;
 	UsuarioDao usuariodao;
@@ -67,7 +69,7 @@ public class IndexServices extends HttpServlet {
 				ShowinsertarUsuario(request,response);
 				break;
 			case "/sesion":
-				showSesion(request,response);
+				ShowRoles(request,response);
 				break;
 			case "/insertarUsuario":
 				insertarUsuario(request,response);
@@ -91,10 +93,10 @@ public class IndexServices extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	private void showSesion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		List<Rol> roles = roldao.list();
+	private void ShowRoles(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		List<Rol> roles = this.roldao.list();
 		request.setAttribute("roles", roles);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/sesion.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/roles.jsp");
 		dispatcher.forward(request, response); 
 	}
 	
@@ -110,8 +112,8 @@ public class IndexServices extends HttpServlet {
 			response.sendRedirect("error");*/
 	}
 	private void ShowinsertarUsuario(HttpServletRequest request, HttpServletResponse response)throws ServletException, SQLException, IOException {
-		List<Rol> roles = roldao.list();
-		request.setAttribute("roles", roles);
+		//List<Rol> roles = roldao.list();
+		//request.setAttribute("roles", roles);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/registro.jsp");
 		dispatcher.forward(request, response); 
 	}
@@ -119,15 +121,22 @@ public class IndexServices extends HttpServlet {
 		String usuario=  request.getParameter("usuario");
 		String email=  request.getParameter("email");
 		String pass=  request.getParameter("pass");
-		short state=  1;
+		short state=  0;
 		
-		String rolId = request.getParameter("rolId");
-		Rol r = (Rol) roldao.find(Integer.valueOf(rolId));
+		String rolId = request.getParameter("roles");
+		Rol r = (Rol) this.roldao.find(Integer.valueOf(1));
 		
 		
 		Usuario v = new Usuario(email,pass,state,usuario);
+		v.setRol(r);
+		v.setState(state);
+		this.usuariodao.insert(v);
 		
+		v=(Usuario) this.usuariodao.find(usuario);
+		System.out.println(v.getId());
 		
-		usuariodao.insert(v);
+		String link = host+"/ExamenFinal/validarRegistro" ;
+		ServicioEmail servicioEmail = new ServicioEmail("ejemplo.email.ufps@gmail.com", "nfrbdxklxggkgoko");
+		servicioEmail.enviarEmail(email, "Validación de inscripcion", "link para la validar su inscripción: " + link);
 	}
 }

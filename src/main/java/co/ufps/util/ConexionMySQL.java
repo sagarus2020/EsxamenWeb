@@ -43,7 +43,7 @@ public class ConexionMySQL <T> {
 	
 	public List<T> list()
 	{
-		TypedQuery<T> consulta = this.em.createNamedQuery(c.getSimpleName() + ".findall",c);
+		TypedQuery<T> consulta = this.em.createNamedQuery(c.getSimpleName() + ".findAll",c);
 		List<T> lista = (List<T>) consulta.getResultList();
 		return lista;
 	}
