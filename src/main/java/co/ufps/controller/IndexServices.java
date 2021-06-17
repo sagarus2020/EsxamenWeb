@@ -11,7 +11,7 @@ import co.ufps.dao.reporteDao;
 import co.ufps.dao.rolDao;
 import co.ufps.dao.seguimientoDao;
 import co.ufps.dao.typeDao;
-
+import co.ufps.entity.Connectiontoken;
 import co.ufps.entity.Rol;
 import co.ufps.entity.Usuario;
 import co.ufps.util.ServicioEmail;
@@ -74,7 +74,9 @@ public class IndexServices extends HttpServlet {
 			case "/insertarUsuario":
 				insertarUsuario(request,response);
 				break;
-
+			case "/listToken":
+				insertarUsuario(request,response);
+				break;
 			default:
 				ShowinsertarUsuario(request,response);
 				break;
@@ -132,11 +134,23 @@ public class IndexServices extends HttpServlet {
 		v.setState(state);
 		this.usuariodao.insert(v);
 		
-		v=(Usuario) this.usuariodao.find(usuario);
+		v=(Usuario) this.usuariodao.findByUser(usuario);
 		System.out.println(v.getId());
 		
 		String link = host+"/ExamenFinal/validarRegistro" ;
 		ServicioEmail servicioEmail = new ServicioEmail("ejemplo.email.ufps@gmail.com", "nfrbdxklxggkgoko");
 		servicioEmail.enviarEmail(email, "Validación de inscripcion", "link para la validar su inscripción: " + link);
+	}
+	private void ShowTokens(HttpServletRequest request, HttpServletResponse response)throws ServletException, SQLException, IOException {
+		List<Connectiontoken> roles = connectiontokendao.list();
+		request.setAttribute("roles", roles);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/tokenList.jsp");
+		dispatcher.forward(request, response); 
+	}
+	private void eliminarToken(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException
+	{
+		int id = Integer.parseInt(request.getParameter("id"));
+
+		response.sendRedirect("listToken");
 	}
 }

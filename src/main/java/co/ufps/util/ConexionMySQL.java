@@ -57,7 +57,7 @@ public class ConexionMySQL <T> {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
-			em.close();
+	//em.close
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class ConexionMySQL <T> {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally{
-			em.close();
+			//em.close
 		}
 	}
 	
@@ -83,7 +83,7 @@ public class ConexionMySQL <T> {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
-			em.close();
+			//em.close	
 		}
 	}
 }
