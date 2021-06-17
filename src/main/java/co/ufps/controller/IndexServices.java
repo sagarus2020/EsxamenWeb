@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+
 import co.ufps.dao.UsuarioDao;
 import co.ufps.dao.connectionTokenDao;
 import co.ufps.dao.reporteDao;
@@ -63,7 +64,7 @@ public class IndexServices extends HttpServlet {
 		try {
 			switch(action){
 			case "/registro":
-				validarUsuario(request,response);
+				ShowinsertarUsuario(request,response);
 				break;
 			case "/sesion":
 				showSesion(request,response);
@@ -118,8 +119,15 @@ public class IndexServices extends HttpServlet {
 		String usuario=  request.getParameter("usuario");
 		String email=  request.getParameter("email");
 		String pass=  request.getParameter("pass");
-		short state=  Short.parseShort(request.getParameter("state"));
+		short state=  1;
+		
+		String rolId = request.getParameter("rolId");
+		Rol r = (Rol) roldao.find(Integer.valueOf(rolId));
+		
+		
 		Usuario v = new Usuario(email,pass,state,usuario);
+		
+		
 		usuariodao.insert(v);
 	}
 }

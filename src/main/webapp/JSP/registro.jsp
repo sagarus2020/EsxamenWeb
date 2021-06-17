@@ -19,8 +19,8 @@
 				<nav class="navbar navbar-expand-md navbar-dark bg-dark">
 					<ul class="navbar-nav">
 						<li><a
-							href="<%=request.getContextPath()%>/inscripcionCandidato"
-							class="nav-link">Inscripción Usuario</a></li>
+							href="<%=request.getContextPath()%>/registro"
+							class="nav-link">Inscripcion Usuario</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -31,34 +31,21 @@
 
 	<div class="container">
 		<div class="row">
-			<h2>Registro de población electoral</h2>
+			<h2>Registro de usuario</h2>
 
-			<form action="insertarVotante" method="post">
+			<form action="insertarUsuario" method="post">
 
-				<select class="form-select" aria-label="Default select example"
-					name="estamentoId">
-					<option selected>Seleccione el estamento</option>
-					<c:forEach var="i" items="${estamentos}">
-						<option value="${i.id}">"${i.descripcion}"</option>
-					</c:forEach>
-				</select> <br> <select class="form-select"
-					aria-label="Default select example" name="tipoDocumentoId">
-					<option selected>Seleccione el tipo de documento</option>
-					<c:forEach var="i" items="${tipodocumentos}">
-						<option value="${i.id}">"${i.descripcion}"</option>
-					</c:forEach>
-				</select> <br>
-
+<hr>
 				<fieldset class="form-group">
-					<label>Documento</label> <input type="text" class="form-control"
-						name="documento" required="required" maxlength="20">
+					<label>Usuario</label> <input type="text" class="form-control"
+						name="usuario" required="required" maxlength="20">
 				</fieldset>
 
 				<br>
 
 				<fieldset class="form-group">
-					<label>Nombre</label> <input type="text" class="form-control"
-						name="nombre" required="required" maxlength="100">
+					<label>Pass</label> <input type="text" class="form-control"
+						name="pass" required="required" maxlength="100">
 				</fieldset>
 
 				<br>
@@ -67,23 +54,21 @@
 					<label>Email</label> <input type="text" class="form-control"
 						name="email" required="required" maxlength="50">
 				</fieldset>
-
-				<br> <select class="form-select"
-					aria-label="Default select example" name="eleccionId">
-					<label>Elección</label>
-					<option selected>Seleccione elección</option>
-					<c:forEach var="i" items="${elecciones}">
-						<option value="${i.id}">
-							"${i.nombre}"&nbsp;"${i.fechaInicio}"-"${i.fechaFin}"</option>
+<br>
+				<select class="form-select" aria-label="Default select example"
+					name="estamentoId">
+					<option selected>Seleccione el estamento</option>
+					<c:forEach var="i" items="${roles}">
+						<option value="${i.id}">"${i.descripcion}"</option>
 					</c:forEach>
-				</select> <br>
+
 
 				<button type="submit" class="btn btn-danger">Registrar
 					Votante</button>
 			</form>
 
 			<c:if test="${registrado == true }">
-				<div class="alert alert-success" role="alert">El votante ha
+				<div class="alert alert-success" role="alert">El Usuario ha
 					realizado su registro de forma correcta</div>
 			</c:if>
 		</div>
