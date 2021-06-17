@@ -13,116 +13,81 @@
 </head>
 
 <body class="bg-light">
-	<div class="container">
-		<div class="py-5 text-center">
-			<img class="d-block mx-auto mb-4"
-				src="/docs/4.4/assets/brand/bootstrap-solid.svg" alt="" width="72"
-				height="72">
-			<h2>Checkout form</h2>
-			<p class="lead">Below is an example form built entirely with
-				Bootstrap’s form controls. Each required form group has a validation
-				state that can be triggered by attempting to submit the form without
-				completing it.</p>
-		</div>-
-
-		<div class="row">
-			<div class="col-md-4 order-md-2 mb-4"></div>
-			<div class="col-md-8 order-md-1">
-				<h4 class="mb-3">Registro</h4>
-				<form class="needs-validation" novalidate="">
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label for="firstName">First name</label> <input type="text"
-								class="form-control" id="firstName" placeholder="" value=""
-								required="">
-							<div class="invalid-feedback">Valid first name is required.
-							</div>
-						</div>
-						<div class="col-md-6 mb-3">
-							<label for="lastName">Last name</label> <input type="text"
-								class="form-control" id="lastName" placeholder="" value=""
-								required="">
-							<div class="invalid-feedback">Valid last name is required.
-							</div>
-						</div>
-					</div>
-
-					<div class="mb-3">
-						<label for="username">Username</label>
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<span class="input-group-text">@</span>
-							</div>
-							<input type="text" class="form-control" id="username"
-								placeholder="Username" required="">
-							<div class="invalid-feedback" style="width: 100%;">Your
-								username is required.</div>
-						</div>
-					</div>
-
-					<div class="mb-3">
-						<label for="email">Email <span class="text-muted">(Optional)</span></label>
-						<input type="email" class="form-control" id="email"
-							placeholder="you@example.com">
-						<div class="invalid-feedback">Please enter a valid email
-							address for shipping updates.</div>
-					</div>
-
-
-					<div class="row">
-						<div class="col-md-5 mb-3">
-							<label for="country">Country</label> <select
-								class="custom-select d-block w-100" id="country" required="">
-								<option value=""></option>
-								<option></option>
-							</select>
-							<div class="invalid-feedback">Please select a valid
-								country.</div>
-						</div>
-						<div class="col-md-4 mb-3">
-							<label for="state">State</label> <select
-								class="custom-select d-block w-100" id="state" required="">
-								<option value="">Choose...</option>
-								<option>California</option>
-							</select>
-							<div class="invalid-feedback">Please provide a valid state.
-							</div>
-						</div>
-						<div class="col-md-3 mb-3">
-							<label for="zip">Zip</label> <input type="text"
-								class="form-control" id="zip" placeholder="" required="">
-							<div class="invalid-feedback">Zip code required.</div>
-						</div>
-					</div>
+<header>
+		<div class="container">
+			<div class="row">
+				<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+					<ul class="navbar-nav">
+						<li><a
+							href="<%=request.getContextPath()%>/inscripcionCandidato"
+							class="nav-link">Inscripción Usuario</a></li>
+					</ul>
+				</nav>
 			</div>
 		</div>
-		<hr class="mb-4">
-		<button class="btn btn-primary btn-lg btn-block" type="submit">Registrar</button>
-		</form>
-	</div>
-	</div>
+	</header>
 
-	<footer class="my-5 pt-5 text-muted text-center text-small">
-		<p class="mb-1"></p>
-		<ul class="list-inline">
-			<li class="list-inline-item"><a href="#">Privacy</a></li>
-			<li class="list-inline-item"><a href="#">Terms</a></li>
-			<li class="list-inline-item"><a href="#">Support</a></li>
-		</ul>
-	</footer>
+	<br>
+
+	<div class="container">
+		<div class="row">
+			<h2>Registro de población electoral</h2>
+
+			<form action="insertarVotante" method="post">
+
+				<select class="form-select" aria-label="Default select example"
+					name="estamentoId">
+					<option selected>Seleccione el estamento</option>
+					<c:forEach var="i" items="${estamentos}">
+						<option value="${i.id}">"${i.descripcion}"</option>
+					</c:forEach>
+				</select> <br> <select class="form-select"
+					aria-label="Default select example" name="tipoDocumentoId">
+					<option selected>Seleccione el tipo de documento</option>
+					<c:forEach var="i" items="${tipodocumentos}">
+						<option value="${i.id}">"${i.descripcion}"</option>
+					</c:forEach>
+				</select> <br>
+
+				<fieldset class="form-group">
+					<label>Documento</label> <input type="text" class="form-control"
+						name="documento" required="required" maxlength="20">
+				</fieldset>
+
+				<br>
+
+				<fieldset class="form-group">
+					<label>Nombre</label> <input type="text" class="form-control"
+						name="nombre" required="required" maxlength="100">
+				</fieldset>
+
+				<br>
+
+				<fieldset class="form-group">
+					<label>Email</label> <input type="text" class="form-control"
+						name="email" required="required" maxlength="50">
+				</fieldset>
+
+				<br> <select class="form-select"
+					aria-label="Default select example" name="eleccionId">
+					<label>Elección</label>
+					<option selected>Seleccione elección</option>
+					<c:forEach var="i" items="${elecciones}">
+						<option value="${i.id}">
+							"${i.nombre}"&nbsp;"${i.fechaInicio}"-"${i.fechaFin}"</option>
+					</c:forEach>
+				</select> <br>
+
+				<button type="submit" class="btn btn-danger">Registrar
+					Votante</button>
+			</form>
+
+			<c:if test="${registrado == true }">
+				<div class="alert alert-success" role="alert">El votante ha
+					realizado su registro de forma correcta</div>
+			</c:if>
+		</div>
 	</div>
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-		crossorigin="anonymous"></script>
-	<script>
-		window.jQuery
-				|| document
-						.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')
-	</script>
-	<script src="/docs/4.4/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
-		crossorigin="anonymous"></script>
-	<script src="form-validation.js"></script>
 
 </body>
 </html>

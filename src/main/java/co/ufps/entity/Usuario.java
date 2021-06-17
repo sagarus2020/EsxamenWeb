@@ -34,6 +34,16 @@ public class Usuario implements Serializable {
 	@JoinColumn(name="role")
 	private Rol rol;
 
+
+
+	public Usuario(String email, String pass, short state, String usuario) {
+		super();
+		this.email = email;
+		this.pass = pass;
+		this.state = state;
+		this.usuario = usuario;
+	}
+
 	public Usuario() {
 	}
 

@@ -24,7 +24,7 @@ public class ConexionMySQL <T> {
 	public EntityManager getEm()
 	{
 		if(this.em==null) {
-			this.emf = Persistence.createEntityManagerFactory("ExamenFinal");
+			this.emf = Persistence.createEntityManagerFactory("ExamenWeb");
 			this.em = emf.createEntityManager();
 		}
 		return this.em;

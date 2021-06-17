@@ -4,17 +4,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import co.edu.ufps.beans.Candidato;
-import co.edu.ufps.beans.Eleccion;
-import co.edu.ufps.beans.Estamento;
-import co.edu.ufps.entities.VotanteEntity;
+import co.ufps.dao.UsuarioDao;
 import co.ufps.dao.connectionTokenDao;
 import co.ufps.dao.reporteDao;
 import co.ufps.dao.rolDao;
 import co.ufps.dao.seguimientoDao;
 import co.ufps.dao.typeDao;
-import co.ufps.dao.usuarioDao;
+
 import co.ufps.entity.Rol;
+import co.ufps.entity.Usuario;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -31,10 +29,10 @@ public class IndexServices extends HttpServlet {
 	private static final long serialVersionUID = 1L;
  
 	rolDao roldao;
-	usuarioDao usuariodao;
+	UsuarioDao usuariodao;
 	seguimientoDao seguimientodao;
 	reporteDao reportedao;
-	typeDao typedbdao;
+	typeDao typedao;
 	connectionTokenDao connectiontokendao;
     /**
      * Default constructor. 
@@ -48,7 +46,13 @@ public class IndexServices extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
-		
+		this.usuariodao = new UsuarioDao();
+		this.roldao = new rolDao();
+		this.seguimientodao = new seguimientoDao();
+		this.typedao = new typeDao();
+		this.reportedao = new reporteDao();
+		this.roldao = new rolDao();
+	
 	}
 
 	/**
@@ -58,29 +62,18 @@ public class IndexServices extends HttpServlet {
 		String action = request.getServletPath();
 		try {
 			switch(action){
-			case "/inscripcionCandidato":
-				showInscripcionCandidato(request,response);
+			case "/registro":
+				validarUsuario(request,response);
 				break;
-			case "/insertarCandidato":
-				insertarCandidato(request,response);
+			case "/sesion":
+				showSesion(request,response);
 				break;
-			case "/inscripcionVotante":
-				showInscripcionVotante(request,response);
+			case "/insertarUsuario":
+				insertarUsuario(request,response);
 				break;
-			case "/insertarVotante":
-				insertarVotante(request,response);
-				break;
-			case "/formularioValidacion":
-				showValidarVotante(request,response);
-				break;
-			case "/validarVotante":
-				validarVotante(request,response);
-				break;
-			case "/registrarVoto":
-				registrarVoto(request,response);
-				break;
+
 			default:
-				showInscripcionCandidato(request,response);
+				ShowinsertarUsuario(request,response);
 				break;
 			}
 		}catch(SQLException e)
@@ -98,26 +91,35 @@ public class IndexServices extends HttpServlet {
 		doGet(request, response);
 	}
 	private void showSesion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		List<Rol> roles = rolDao.selectAll();
+		List<Rol> roles = roldao.list();
 		request.setAttribute("roles", roles);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/sesion.jsp");
 		dispatcher.forward(request, response); 
 	}
 	
 	private void validarUsuario(HttpServletRequest request, HttpServletResponse response)throws ServletException, SQLException, IOException {
+		/*
+		String email = (request.getParameter("email"));
+		String password = (request.getParameter("password"));
+		Usuario v = this.UsuarioDao.selectByEmail(email);
 		
-		Integer id = (request.getParameter("email"));
-		String documento = request.getParameter("documento");
-		Integer tipoDocumento = Integer.parseInt(request.getParameter("documentoId"));
-		Usuario v = this.usuarioDao.selectByEmail(id);
-		
-		Integer estamentoId = Integer.parseInt(request.getParameter("estamentoId"));
-		String estamentoDescripcion = request.getParameter("estamentoDescripcion");
-		Rol est = new Estamento(estamentoId, estamentoDescripcion);
-		
-
-		
-		List<Candidato> candidatos = this.candidatoDao.selectAll();
-		response.sendRedirect("formulario");
+		if(v.getPass()==password)
+			response.sendRedirect("formulario");
+		else
+			response.sendRedirect("error");*/
+	}
+	private void ShowinsertarUsuario(HttpServletRequest request, HttpServletResponse response)throws ServletException, SQLException, IOException {
+		List<Rol> roles = roldao.list();
+		request.setAttribute("roles", roles);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("JSP/registro.jsp");
+		dispatcher.forward(request, response); 
+	}
+	private void insertarUsuario(HttpServletRequest request, HttpServletResponse response)throws ServletException, SQLException, IOException {
+		String usuario=  request.getParameter("usuario");
+		String email=  request.getParameter("email");
+		String pass=  request.getParameter("pass");
+		short state=  Short.parseShort(request.getParameter("state"));
+		Usuario v = new Usuario(email,pass,state,usuario);
+		usuariodao.insert(v);
 	}
 }
